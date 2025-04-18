@@ -26,7 +26,7 @@ import jakarta.validation.Valid;
  * This is a REST controller for UCSBOrganizations
  */
 
-@Tag(name = "UCSBOrganizations")
+@Tag(name = "UCSBOrganization")
 @RequestMapping("/api/ucsborganizations")
 @RestController
 @Slf4j 
