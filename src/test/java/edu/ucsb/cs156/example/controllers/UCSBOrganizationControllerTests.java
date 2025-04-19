@@ -125,7 +125,7 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
 
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
-        public void an_admin_user_can_post_a_new_organization() throws Exception {
+        public void an_admin_user_can_post_a_new_organization() throws Exception{
                 // arrange
 
                 UCSBOrganization org2 = UCSBOrganization.builder()
@@ -152,7 +152,7 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
 
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
-        public void an_admin_user_can_post_an_inactive_ucsborganization() {
+        public void an_admin_user_can_post_an_inactive_ucsborganization() throws Exception{
                 // arrange
                 UCSBOrganization inactive = UCSBOrganization.builder()
                         .orgCode("INACTIVE")
@@ -165,7 +165,7 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                post("/api/ucsborganizations/post?name=INACTIVE&orgCode=INACTIVE&orgTranslationShort=INACTIVE ORG&orgTranslation=INACTIVE ORGANIZATION&inactive=true")
+                                post("/api/ucsborganizations/post?orgCode=INACTIVE&orgTranslationShort=INACTIVE ORG&orgTranslation=INACTIVE ORGANIZATION&inactive=true")
                                                 .with(csrf()))
                                 .andExpect(status().isOk()).andReturn();
 
