@@ -78,5 +78,21 @@ import jakarta.validation.Valid;
 <span class="fc" id="L78">        return savedOrganization;</span>
     }
 
+    /**
+     * This method returns a single organization.
+     * @param orgCode code of the organization
+     * @return a single diningcommons
+     */
+    @Operation(summary= &quot;Get a single organization&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+    @GetMapping(&quot;&quot;)
+    public UCSBOrganization getById(
+            @Parameter(name=&quot;orgCode&quot;) @RequestParam String orgCode) {
+<span class="fc" id="L91">        UCSBOrganization organizations = ucsbOrganizationRepository.findById(orgCode)</span>
+<span class="fc" id="L92">                .orElseThrow(() -&gt; new EntityNotFoundException(UCSBOrganization.class, orgCode));</span>
+
+<span class="fc" id="L94">        return organizations;</span>
+    }
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
