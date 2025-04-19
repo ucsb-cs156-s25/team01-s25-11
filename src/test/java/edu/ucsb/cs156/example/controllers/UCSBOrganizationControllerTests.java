@@ -77,16 +77,37 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
 
                 // arrange
 
-                UCSBOrganization org1 = UCSBOrganization.builder()
+                UCSBOrganization zetaPhiRho = UCSBOrganization.builder()
+                                .orgCode("ZPR")
+                                .orgTranslationShort("ZETA PHI RHO")
+                                .orgTranslation("ZETA PHI RHO")
+                                .inactive(false)
+                                .build();
+
+                UCSBOrganization skyClub = UCSBOrganization.builder()
                                 .orgCode("SKY")
                                 .orgTranslationShort("SKYDIVING CLUB")
                                 .orgTranslation("SKYDIVING CLUB AT UCSB")
                                 .inactive(false)
                                 .build();
 
+                UCSBOrganization studentLife = UCSBOrganization.builder()
+                                .orgCode("OSLI")
+                                .orgTranslationShort("STUDENT LIFE")
+                                .orgTranslation("OFFICE OF STUDENT LIFE")
+                                .inactive(false)
+                                .build(); 
+
+                UCSBOrganization koreanRadio = UCSBOrganization.builder()
+                                .orgCode("KRC")
+                                .orgTranslationShort("KOREAN RADIO CL")
+                                .orgTranslation("KOREAN RADIO CLUB")
+                                .inactive(false)
+                                .build();
+
 
                 ArrayList<UCSBOrganization> expectedOrganization = new ArrayList<>();
-                expectedOrganization.add(org1);
+                expectedOrganization.addAll(Arrays.asList(zetaPhiRho,skyClub,studentLife,koreanRadio));
 
                 when(ucsbOrganizationRepository.findAll()).thenReturn(expectedOrganization);
 
@@ -125,6 +146,32 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
                 // assert
                 verify(ucsbOrganizationRepository, times(1)).save(org2);
                 String expectedJson = mapper.writeValueAsString(org2);
+                String responseString = response.getResponse().getContentAsString();
+                assertEquals(expectedJson, responseString);
+        }
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void an_admin_user_can_post_an_inactive_ucsborganization() {
+                // arrange
+                UCSBOrganization inactive = UCSBOrganization.builder()
+                        .orgCode("INACTIVE")
+                        .orgTranslationShort("INACTIVE ORG")
+                        .orgTranslation("INACTIVE ORGANIZATION")
+                        .inactive(true)
+                        .build();
+
+                when(ucsbOrganizationRepository.save(eq(inactive))).thenReturn(inactive);
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                post("/api/ucsborganizations/post?name=INACTIVE&orgCode=INACTIVE&orgTranslationShort=INACTIVE ORG&orgTranslation=INACTIVE ORGANIZATION&inactive=true")
+                                                .with(csrf()))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+                verify(ucsbOrganizationRepository, times(1)).save(inactive);
+                String expectedJson = mapper.writeValueAsString(inactive);
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(expectedJson, responseString);
         }
