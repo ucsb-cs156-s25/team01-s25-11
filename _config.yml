@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-s25/team01-s25-11
 owner: ucsb-cs156-s25
 repo_name: team01-s25-11
-pull_requests: []
+pull_requests: [{"author":{"id":"U_kgDOB3DvIw","is_bot":false,"login":"Trocha1","name":""},"headRefName":"tr-UCSBDiningCommonsMenuItem-add-put","number":51,"title":"tr - UCSBDiningCommonsMenuItem add put method","url":"https://github.com/ucsb-cs156-s25/team01-s25-11/pull/51"}]
