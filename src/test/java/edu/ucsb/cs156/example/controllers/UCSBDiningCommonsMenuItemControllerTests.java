@@ -210,9 +210,9 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                                 .build();
 
                 UCSBDiningCommonsMenuItem ucsbDiningCommonsMenuItemEdited = UCSBDiningCommonsMenuItem.builder()
-                                .diningCommonsCode("Carrillo")
-                                .name("Meatloaf")
-                                .station("entree")
+                                .diningCommonsCode("DLG")
+                                .name("Ice Cream")
+                                .station("desert")
                                 .build();
 
                 String requestBody = mapper.writeValueAsString(ucsbDiningCommonsMenuItemEdited);
