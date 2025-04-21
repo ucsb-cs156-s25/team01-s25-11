@@ -228,4 +228,75 @@ public class UCSBOrganizationControllerTests extends ControllerTestCase {
                 assertEquals("EntityNotFoundException", json.get("type"));
                 assertEquals("UCSBOrganization with id CODESB not found", json.get("message"));
         }
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_can_edit_an_existing_organization() throws Exception {
+                // arrange
+
+                UCSBOrganization org = UCSBOrganization.builder()
+                                .orgCode("OSLI")
+                                .orgTranslationShort("STUDENTLIFE")
+                                .orgTranslation("OFFICEOFSTUDENTLIFE")
+                                .inactive(false)
+                                .build();
+
+                UCSBOrganization orgEdited = UCSBOrganization.builder()
+                                .orgCode("OSLI")
+                                .orgTranslationShort("studentlife")
+                                .orgTranslation("officeofstudentlife")
+                                .inactive(true)
+                                .build();
+
+                String requestBody = mapper.writeValueAsString(orgEdited);
+
+                when(ucsbOrganizationRepository.findById(eq("OSLI"))).thenReturn(Optional.of(org));
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                put("/api/ucsborganizations?orgCode=OSLI")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .characterEncoding("utf-8")
+                                                .content(requestBody)
+                                                .with(csrf()))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+                verify(ucsbOrganizationRepository, times(1)).findById("OSLI");
+                verify(ucsbOrganizationRepository, times(1)).save(orgEdited); // should be saved with updated info
+                String responseString = response.getResponse().getContentAsString();
+                assertEquals(requestBody, responseString);
+        }
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_cannot_edit_commons_that_does_not_exist() throws Exception {
+                // arrange
+
+                UCSBOrganization editedOrg = UCSBOrganization.builder()
+                                .orgCode("OSLI")
+                                .orgTranslationShort("STUDENTLIFE")
+                                .orgTranslation("OFFICEOFSTUDENTLIFE")
+                                .inactive(false)
+                                .build();
+
+                String requestBody = mapper.writeValueAsString(editedOrg);
+
+                when(ucsbOrganizationRepository.findById(eq("munger-hall"))).thenReturn(Optional.empty());
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                put("/api/ucsborganizations?orgCode=OSLI")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .characterEncoding("utf-8")
+                                                .content(requestBody)
+                                                .with(csrf()))
+                                .andExpect(status().isNotFound()).andReturn();
+
+                // assert
+                verify(ucsbOrganizationRepository, times(1)).findById("OSLI");
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("UCSBOrganization with id OSLI not found", json.get("message"));
+
+        }
 }
