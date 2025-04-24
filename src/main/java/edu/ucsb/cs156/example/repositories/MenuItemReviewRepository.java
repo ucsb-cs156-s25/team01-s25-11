@@ -6,4 +6,4 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MenuItemReviewRepository extends CrudRepository<MenuItemReviews, Long> {}
+public interface MenuItemReviewRepository extends CrudRepository<MenuItemReview, Long> {}
