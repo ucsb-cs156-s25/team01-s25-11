@@ -69,7 +69,6 @@ public class ArticlesControllerTests extends ControllerTestCase {
             mockMvc.perform(post("/api/articles/post"))
                             .andExpect(status().is(403));
     }
-    
 
     @WithMockUser(roles = { "USER" })
     @Test
@@ -118,29 +117,25 @@ public class ArticlesControllerTests extends ControllerTestCase {
         LocalDateTime ldt1 = LocalDateTime.parse("2025-04-21T17:00:00");
     
         Articles article1 = Articles.builder()
-                .title("sl - create database table for Articles")
+                .title("firstArticles")
                 .url("https://github.com/ucsb-cs156-s25/team01-s25-11/commit/8e28ad3216e5156bb0ffbd67164f761635920f41")
                 .explanation("sl-updated")
                 .email("shuang_li@ucsb.edu")
                 .dateAdded(ldt1)
                 .build();
     
-        when(articlesRepository.save(any(Articles.class))).thenReturn(article1);
+        when(articlesRepository.save(eq(article1))).thenReturn(article1);
+
     
         // act
         MvcResult response = mockMvc.perform(
-                post("/api/articles/post?message=sl-updated" +
-                     "&url=https://github.com/ucsb-cs156-s25/team01-s25-11/commit/8e28ad3216e5156bb0ffbd67164f761635920f41" +
-                     "&title=sl%20-%20create%20database%20table%20for%20Articles" +
-                     "&email=shuang_li@ucsb.edu" +
-                     "&explanation=sl-updated" +
-                     "&dateAdded=2025-04-21T17:00:00")
+                post("/api/articles/post?title=firstArticles&url=https://github.com/ucsb-cs156-s25/team01-s25-11/commit/8e28ad3216e5156bb0ffbd67164f761635920f41&email=shuang_li@ucsb.edu&explanation=sl-updated&dateAdded=2025-04-21T17:00:00")
                     .with(csrf()))
                 .andExpect(status().isOk()).andReturn();
         
     
         // assert
-        verify(articlesRepository, times(1)).save(any(Articles.class));
+        verify(articlesRepository, times(1)).save(article1);
         String expectedJson = mapper.writeValueAsString(article1);
         String responseString = response.getResponse().getContentAsString();
         assertEquals(expectedJson, responseString);
