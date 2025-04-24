@@ -85,7 +85,7 @@ public class RecommendationRequestController extends ApiController {
         request.setProfessorEmail(professorEmail);
         request.setDateRequested(dateRequested);
         request.setDateNeeded(dateNeeded);
-        ucsbDate.setDone(done);
+        request.setDone(done);
 
         RecommendationRequest savedRequest = RecommendationRequestRepository.save(request);
 
