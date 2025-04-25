@@ -165,7 +165,7 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
                 LocalDateTime datereq1 = LocalDateTime.parse("2022-01-03T00:00:00");
                 LocalDateTime dateneeded1 = LocalDateTime.parse("2023-01-03T00:00:00");
 
-                RecommendationRequest RecommendationRequest = RecommendationRequest.builder()
+                RecommendationRequest RecommendationRequest1 = RecommendationRequest.builder()
                                 .requesterEmail("user1@ucsb.edu")
                                 .professorEmail("user2@ucsb.edu")
                                 .explanation("recommendation")
@@ -174,7 +174,7 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
                                 .done(true)
                                 .build();
 
-                when(RecommendationRequestRepository.findById(eq(7L))).thenReturn(Optional.of(RecommendationRequest));
+                when(RecommendationRequestRepository.findById(eq(7L))).thenReturn(Optional.of(RecommendationRequest1));
 
                 // act
                 MvcResult response = mockMvc.perform(get("/api/recommendationrequest?id=7"))
@@ -183,7 +183,7 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
                 // assert
 
                 verify(RecommendationRequestRepository, times(1)).findById(eq(7L));
-                String expectedJson = mapper.writeValueAsString(RecommendationRequest);
+                String expectedJson = mapper.writeValueAsString(RecommendationRequest1);
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(expectedJson, responseString);
         }
