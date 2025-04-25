@@ -97,4 +97,29 @@ public class ArticlesController extends ApiController{
         return savedArticles;
     }
 
+    /**
+    * Get a single article by id
+    * 
+    * @param id the id of the article
+    * @return a Articles
+    */
+    @Operation(summary= "Get a single article")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public Articles getById(
+            @Parameter(name="id") @RequestParam Long id) {
+         Articles article = articlesRepository.findById(id)
+               .orElseThrow(() -> new EntityNotFoundException(Articles.class, id));
+
+        return article;
+  }
+
+
+
+
+
+
+
+
+    
 }
