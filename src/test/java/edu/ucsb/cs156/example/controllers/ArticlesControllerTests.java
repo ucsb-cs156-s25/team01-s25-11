@@ -218,7 +218,7 @@ public class ArticlesControllerTests extends ControllerTestCase {
             .build();
 
             Articles editedArticle = Articles.builder()
-            .title("firstArticles")
+            .title("editedArticles")
             .url("https://github.com/ucsb-cs156-s25/team02-s25-11/commit/8e28ad3216e5156bb0ffbd67164f761635920f41")
             .explanation("sl-new-explanation")
             .email("cgaucho@ucsb.edu")
