@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-s25/team01-s25-11
 owner: ucsb-cs156-s25
 repo_name: team01-s25-11
-pull_requests: [{"author":{"id":"MDQ6VXNlcjUzMjM2OTYx","is_bot":false,"login":"Wendy192837","name":""},"headRefName":"Wendy-ReqRequestTable","number":63,"title":"ws - added controller & get / push tests","url":"https://github.com/ucsb-cs156-s25/team01-s25-11/pull/63"}]
+pull_requests: [{"author":{"id":"U_kgDOB5HCgg","is_bot":false,"login":"aaasami","name":"Shuang"},"headRefName":"sl-put-fot-article-table","number":64,"title":"sl - add PUT and test for PUT in articlesController","url":"https://github.com/ucsb-cs156-s25/team01-s25-11/pull/64"},{"author":{"id":"MDQ6VXNlcjUzMjM2OTYx","is_bot":false,"login":"Wendy192837","name":""},"headRefName":"Wendy-ReqRequestTable","number":63,"title":"ws - added controller & get / push tests","url":"https://github.com/ucsb-cs156-s25/team01-s25-11/pull/63"}]
