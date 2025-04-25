@@ -151,4 +151,60 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
                 assertEquals(expectedJson, responseString);
         }
 
+    @Test
+    public void logged_out_users_cannot_get_by_id() throws Exception {
+                mockMvc.perform(get("/api/recommendationrequest?id=7"))
+                                .andExpect(status().is(403)); // logged out users can't get by id
+    }
+
+    @WithMockUser(roles = { "USER" })
+        @Test
+        public void test_that_logged_in_user_can_get_by_id_when_the_id_exists() throws Exception {
+
+                // arrange
+                LocalDateTime datereq1 = LocalDateTime.parse("2022-01-03T00:00:00");
+                LocalDateTime dateneeded1 = LocalDateTime.parse("2023-01-03T00:00:00");
+
+                RecommendationRequest RecommendationRequest = RecommendationRequest.builder()
+                                .requesterEmail("user1@ucsb.edu")
+                                .professorEmail("user2@ucsb.edu")
+                                .explanation("recommendation")
+                                .dateRequested(datereq1)
+                                .dateNeeded(dateneeded1)
+                                .done(true)
+                                .build();
+
+                when(RecommendationRequestRepository.findById(eq(7L))).thenReturn(Optional.of(RecommendationRequest));
+
+                // act
+                MvcResult response = mockMvc.perform(get("/api/recommendationrequest?id=7"))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+
+                verify(RecommendationRequestRepository, times(1)).findById(eq(7L));
+                String expectedJson = mapper.writeValueAsString(RecommendationRequest);
+                String responseString = response.getResponse().getContentAsString();
+                assertEquals(expectedJson, responseString);
+        }
+
+        @WithMockUser(roles = { "USER" })
+        @Test
+        public void test_that_logged_in_user_can_get_by_id_when_the_id_does_not_exist() throws Exception {
+
+                // arrange
+
+                when(RecommendationRequestRepository.findById(eq(7L))).thenReturn(Optional.empty());
+
+                // act
+                MvcResult response = mockMvc.perform(get("/api/recommendationrequest?id=7"))
+                                .andExpect(status().isNotFound()).andReturn();
+
+                // assert
+
+                verify(RecommendationRequestRepository, times(1)).findById(eq(7L));
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("EntityNotFoundException", json.get("type"));
+                assertEquals("RecommendationRequest with id 7 not found", json.get("message"));
+        }
 }

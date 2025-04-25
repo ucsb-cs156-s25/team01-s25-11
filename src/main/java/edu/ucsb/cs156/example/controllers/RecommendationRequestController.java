@@ -95,4 +95,13 @@ public class RecommendationRequestController extends ApiController {
         return savedRequest;
     }
 
+    @GetMapping("")
+    public RecommendationRequest getById(
+            @Parameter(name="id") @RequestParam Long id) {
+        RecommendationRequest recommendationRequest = RecommendationRequestRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(RecommendationRequest.class, id));
+
+        return recommendationRequest;
+    }
+
 }
