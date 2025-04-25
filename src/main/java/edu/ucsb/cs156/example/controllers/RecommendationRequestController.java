@@ -58,6 +58,7 @@ public class RecommendationRequestController extends ApiController {
      * 
      * @param requesterEmail
      * @param professorEmail
+     * @param explanation
      * @param dateRequested
      * @param dateNeeded
      * @param done
@@ -69,6 +70,7 @@ public class RecommendationRequestController extends ApiController {
     public RecommendationRequest postRecommendationRequest(
             @Parameter(name="requesterEmail") @RequestParam String requesterEmail,
             @Parameter(name="professorEmail") @RequestParam String professorEmail,
+            @Parameter(name="explanation") @RequestParam String explanation,
             @Parameter(name="dateRequested", description="date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)") @RequestParam("dateRequested") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateRequested,
             @Parameter(name="dateNeeded", description="date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)") @RequestParam("dateNeeded") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateNeeded,
             @Parameter(name="done") @RequestParam boolean done)
@@ -83,6 +85,7 @@ public class RecommendationRequestController extends ApiController {
         RecommendationRequest request = new RecommendationRequest();
         request.setRequesterEmail(requesterEmail);
         request.setProfessorEmail(professorEmail);
+        request.setExplanation(explanation);
         request.setDateRequested(dateRequested);
         request.setDateNeeded(dateNeeded);
         request.setDone(done);
