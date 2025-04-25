@@ -97,5 +97,30 @@ import java.time.ZonedDateTime;
 <span class="fc" id="L97">        return savedArticles;</span>
     }
 
+    /**
+    * Get a single article by id
+    * 
+    * @param id the id of the article
+    * @return a Articles
+    */
+    @Operation(summary= &quot;Get a single article&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+    @GetMapping(&quot;&quot;)
+    public Articles getById(
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id) {
+<span class="fc" id="L111">         Articles article = articlesRepository.findById(id)</span>
+<span class="fc" id="L112">               .orElseThrow(() -&gt; new EntityNotFoundException(Articles.class, id));</span>
+
+<span class="fc" id="L114">        return article;</span>
+  }
+
+
+
+
+
+
+
+
+    
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
