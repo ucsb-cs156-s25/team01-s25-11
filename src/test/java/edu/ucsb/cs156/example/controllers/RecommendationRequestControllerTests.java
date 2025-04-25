@@ -108,7 +108,7 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
                 when(RecommendationRequestRepository.findAll()).thenReturn(expectedDates);
 
                 // act
-                MvcResult response = mockMvc.perform(get("/api/RecommendationRequests/all"))
+                MvcResult response = mockMvc.perform(get("/api/recommendationrequest/all"))
                                 .andExpect(status().isOk()).andReturn();
 
                 // assert
@@ -121,7 +121,7 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
 
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
-        public void an_admin_user_can_post_a_new_RecommendationRequest() throws Exception {
+        public void an_admin_user_can_post_a_new_recommendationrequest() throws Exception {
                 // arrange
 
                 LocalDateTime datereq1 = LocalDateTime.parse("2022-01-03T00:00:00");
@@ -140,7 +140,7 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                post("/api/RecommendationRequests/post?requesterEmail=user1@ucsb.edu&professorEmail=user2@ucsb.edu&explanation=recommendation&dateRequested=2022-01-03T00:00:00&dateNeeded=2023-01-03T00:00:00&done=true")
+                                post("/api/recommendationrequest/post?requesterEmail=user1@ucsb.edu&professorEmail=user2@ucsb.edu&explanation=recommendation&dateRequested=2022-01-03T00:00:00&dateNeeded=2023-01-03T00:00:00&done=true")
                                                 .with(csrf()))
                                 .andExpect(status().isOk()).andReturn();
 
