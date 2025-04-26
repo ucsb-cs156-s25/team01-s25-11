@@ -27,9 +27,8 @@ public class MenuItemReview
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id; 
 
-  private long itemId; 
-  private String reviewerEmail;
+  private long itemid; 
+  private String revieweremail;
   private int stars;
-  private LocalDateTime dateReviewed;
   private String comments; 
 }
