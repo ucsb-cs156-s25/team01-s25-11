@@ -53,12 +53,6 @@
                   },
                   {
                     "column": {
-                      "name": "DATEREVIEWED",
-                      "type": "TIMESTAMP"
-                    }
-                  },
-                  {
-                    "column": {
                       "name": "COMMENTS",
                       "type": "VARCHAR(255)"
                     }

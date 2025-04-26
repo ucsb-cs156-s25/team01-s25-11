@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 /**
  * This is a JPA entity that represents a UCSBDate, i.e. an entry
@@ -25,11 +26,10 @@ public class MenuItemReview
 {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id; 
+  private long Id; 
 
-  private long itemId; 
-  private String reviewerEmail;
+  private long itemid; 
+  private String revieweremail;
   private int stars;
-  private LocalDateTime dateReviewed;
   private String comments; 
 }
