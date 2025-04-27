@@ -54,7 +54,7 @@ public class MenuItemReviewController extends ApiController
     }
 
     /**
-     * Create a menu item review 
+     * Create a new menu item review 
      * 
      * @param comments     
      * @param itemId 
@@ -96,10 +96,40 @@ public class MenuItemReviewController extends ApiController
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
     public MenuItemReview getById(
-            @Parameter(name="id") @RequestParam Long id) {
+            @Parameter(name="id") @RequestParam Long id) 
+    {
         MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
 
         return menuItemReview;
     }
+
+    /**
+     * Update a single menu item review 
+     * 
+     * @param id       id of the review to update
+     * @param incoming the new review
+     * @return the updated review object
+     */
+    @Operation(summary= "Update a single menu item review")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public MenuItemReview updateMenuItemReview(
+            @Parameter(name="id") @RequestParam Long id,
+            @RequestBody @Valid MenuItemReview incoming) 
+    {
+
+        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
+
+        menuItemReview.setItemid(incoming.getItemid()); 
+        menuItemReview.setRevieweremail(incoming.getRevieweremail()); 
+        menuItemReview.setComments(incoming.getComments());
+        menuItemReview.setStars(incoming.getStars()); 
+
+        menuItemReviewRepository.save(menuItemReview);
+
+        return menuItemReview;
+    }
+
 }
