@@ -54,7 +54,7 @@ import java.time.ZonedDateTime;
     }
 
     /**
-     * Create a menu item review 
+     * Create a new menu item review 
      * 
      * @param comments     
      * @param itemId 
@@ -96,11 +96,41 @@ import java.time.ZonedDateTime;
     @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
     @GetMapping(&quot;&quot;)
     public MenuItemReview getById(
-            @Parameter(name=&quot;id&quot;) @RequestParam Long id) {
-<span class="fc" id="L100">        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)</span>
-<span class="fc" id="L101">                .orElseThrow(() -&gt; new EntityNotFoundException(MenuItemReview.class, id));</span>
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id) 
+    {
+<span class="fc" id="L101">        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)</span>
+<span class="fc" id="L102">                .orElseThrow(() -&gt; new EntityNotFoundException(MenuItemReview.class, id));</span>
 
-<span class="fc" id="L103">        return menuItemReview;</span>
+<span class="fc" id="L104">        return menuItemReview;</span>
     }
+
+    /**
+     * Update a single menu item review 
+     * 
+     * @param id       id of the review to update
+     * @param incoming the new review
+     * @return the updated review object
+     */
+    @Operation(summary= &quot;Update a single menu item review&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+    @PutMapping(&quot;&quot;)
+    public MenuItemReview updateMenuItemReview(
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id,
+            @RequestBody @Valid MenuItemReview incoming) 
+    {
+
+<span class="fc" id="L122">        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)</span>
+<span class="fc" id="L123">                .orElseThrow(() -&gt; new EntityNotFoundException(MenuItemReview.class, id));</span>
+
+<span class="fc" id="L125">        menuItemReview.setItemid(incoming.getItemid()); </span>
+<span class="fc" id="L126">        menuItemReview.setRevieweremail(incoming.getRevieweremail()); </span>
+<span class="fc" id="L127">        menuItemReview.setComments(incoming.getComments());</span>
+<span class="fc" id="L128">        menuItemReview.setStars(incoming.getStars()); </span>
+
+<span class="fc" id="L130">        menuItemReviewRepository.save(menuItemReview);</span>
+
+<span class="fc" id="L132">        return menuItemReview;</span>
+    }
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
