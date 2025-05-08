@@ -11,7 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,6 +57,7 @@ public class MenuItemReviewController extends ApiController
      * @param itemId 
      * @param reviewerEmail 
      * @param stars 
+     * @param dateReviewed
      * @return the saved menuItemReview 
      */
     @Operation(summary= "Create a menu item review")
@@ -65,15 +69,19 @@ public class MenuItemReviewController extends ApiController
             @Parameter(name="comments") @RequestParam String comments,
             @Parameter(name="itemId") @RequestParam long itemId, 
             @Parameter(name="reviewerEmail") @RequestParam String reviewerEmail,
-            @Parameter(name="stars") @RequestParam int stars 
-    )
+            @Parameter(name="stars") @RequestParam int stars, 
+            @Parameter(name="dateReviewed") @RequestParam("dateReviewed") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateReviewed
+            )
             throws JsonProcessingException 
             {
+
+        log.info("dateReviewed={}", dateReviewed);
 
         MenuItemReview menuItemReview = new MenuItemReview();
         menuItemReview.setItemid(itemId); 
         menuItemReview.setComments(comments);
         menuItemReview.setRevieweremail(reviewerEmail); 
+        menuItemReview.setDatereviewed(dateReviewed); 
         menuItemReview.setStars(stars); 
         MenuItemReview savedMenuItemReview = menuItemReviewRepository.save(menuItemReview);
 
@@ -120,6 +128,7 @@ public class MenuItemReviewController extends ApiController
         menuItemReview.setRevieweremail(incoming.getRevieweremail()); 
         menuItemReview.setComments(incoming.getComments());
         menuItemReview.setStars(incoming.getStars()); 
+        menuItemReview.setDatereviewed(incoming.getDatereviewed()); 
 
         menuItemReviewRepository.save(menuItemReview);
 
@@ -136,7 +145,8 @@ public class MenuItemReviewController extends ApiController
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("")
     public Object deleteMenuItemReview(
-            @Parameter(name="id") @RequestParam Long id) {
+            @Parameter(name="id") @RequestParam Long id) 
+    {
         MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
 
