@@ -78,11 +78,15 @@ public class MenuItemReviewControllerTests  extends ControllerTestCase
 
                 // arrange
 
+                LocalDateTime ldt1 = LocalDateTime.parse("2025-01-01T00:00:00");
+                LocalDateTime ldt2 = LocalDateTime.parse("2025-03-03T00:00:00");
+
                 MenuItemReview menuItemReview1 = MenuItemReview.builder()
                 .comments("good")
                 .itemid(33)
                 .revieweremail("4327@ucsb.edu")
                 .stars(5)
+                .datereviewed(ldt1) 
                 .build(); 
 
                 MenuItemReview menuItemReview2 = MenuItemReview.builder()
@@ -90,6 +94,7 @@ public class MenuItemReviewControllerTests  extends ControllerTestCase
                 .itemid(30)
                 .revieweremail("7432@ucsb.edu")
                 .stars(4)
+                .datereviewed(ldt2)
                 .build(); 
 
                 ArrayList<MenuItemReview> expectedReviews = new ArrayList<>();
@@ -114,18 +119,20 @@ public class MenuItemReviewControllerTests  extends ControllerTestCase
         public void an_admin_user_can_post_a_new_menu_item_review() throws Exception {
                 // arrange
 
+                LocalDateTime ldt1 = LocalDateTime.parse("2025-01-01T00:00:00");
                 MenuItemReview menuItemReview1 = MenuItemReview.builder()
                                 .comments("good")
                                 .itemid(30)
                                 .revieweremail("7432@ucsb.edu")
                                 .stars(4)
+                                .datereviewed(ldt1)
                                 .build(); 
 
                 when(menuItemReviewRepository.save(eq(menuItemReview1))).thenReturn(menuItemReview1);
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                post("/api/menuitemreviews/post?itemId=30&reviewerEmail=7432@ucsb.edu&stars=4&comments=good")
+                                post("/api/menuitemreviews/post?itemId=30&reviewerEmail=7432@ucsb.edu&stars=4&comments=good&dateReviewed=2025-01-01T00:00:00")
                                                 .with(csrf())) // "
                                 .andExpect(status().isOk()).andReturn();
 
@@ -147,11 +154,13 @@ public class MenuItemReviewControllerTests  extends ControllerTestCase
         public void test_that_logged_in_user_can_get_by_id_when_the_id_exists() throws Exception {
 
                 // arrange
+                LocalDateTime ldt1 = LocalDateTime.parse("2022-01-01T00:00:00");
                 MenuItemReview menuItemReview1 = MenuItemReview.builder()
                                 .comments("good")
                                 .itemid(30)
                                 .revieweremail("7432@ucsb.edu")
                                 .stars(4)
+                                .datereviewed(ldt1)
                                 .build(); 
 
                 when(menuItemReviewRepository.findById(eq(7L))).thenReturn(Optional.of(menuItemReview1));
@@ -188,15 +197,20 @@ public class MenuItemReviewControllerTests  extends ControllerTestCase
                 assertEquals("MenuItemReview with id 7 not found", json.get("message"));
         }
 
+
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
         public void admin_can_edit_an_existing_menuitemreview() throws Exception {
                 // arrange
+                LocalDateTime ldt1 = LocalDateTime.parse("2025-01-01T00:00:00");
+                LocalDateTime ldt2 = LocalDateTime.parse("2025-04-02T00:00:00");
+
                 MenuItemReview menuItemReviewOrig = MenuItemReview.builder()
                                 .comments("good")
                                 .itemid(30)
                                 .revieweremail("7432@ucsb.edu")
                                 .stars(4)
+                                .datereviewed(ldt1)
                                 .build(); 
 
                 MenuItemReview menuItemReviewEdited = MenuItemReview.builder()
@@ -204,6 +218,7 @@ public class MenuItemReviewControllerTests  extends ControllerTestCase
                                 .itemid(15)
                                 .revieweremail("7353@ucsb.edu")
                                 .stars(1)
+                                .datereviewed(ldt2)
                                 .build(); 
 
                 String requestBody = mapper.writeValueAsString(menuItemReviewEdited);
@@ -230,11 +245,14 @@ public class MenuItemReviewControllerTests  extends ControllerTestCase
         @Test
         public void admin_cannot_edit_menuitemreview_that_does_not_exist() throws Exception {
                 // arrange
+                LocalDateTime ldt1 = LocalDateTime.parse("2025-01-01T00:00:00");
+
                 MenuItemReview menuItemReviewEdited = MenuItemReview.builder()
                                 .comments("bad")
                                 .itemid(30)
                                 .revieweremail("7353@ucsb.edu")
                                 .stars(1)
+                                .datereviewed(ldt1)
                                 .build(); 
 
                 String requestBody = mapper.writeValueAsString(menuItemReviewEdited);
@@ -261,11 +279,14 @@ public class MenuItemReviewControllerTests  extends ControllerTestCase
         @Test
         public void admin_can_delete_a_review() throws Exception {
                 // arrange
+                LocalDateTime ldt1 = LocalDateTime.parse("2025-05-01T00:00:00");
+
                 MenuItemReview menuItemReview1 = MenuItemReview.builder()
                                 .comments("bad")
                                 .itemid(30)
                                 .revieweremail("7353@ucsb.edu")
                                 .stars(1)
+                                .datereviewed(ldt1)
                                 .build(); 
 
                 when(menuItemReviewRepository.findById(eq(15L))).thenReturn(Optional.of(menuItemReview1));
